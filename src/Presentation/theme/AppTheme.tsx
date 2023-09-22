@@ -32,7 +32,5 @@ export enum ThemeApp {
    * Magenta
    */
   FUCHSIA = '#EB06FF',
-  WHITE = '#FFFF'
+  WHITE = '#FBFBFB'
 }
-
-console.log(ThemeApp.BRIGHT_BLUE)

@@ -5,8 +5,7 @@ import MainNavigationStack from './src/Presentation/navigations/MainNavigationSt
 export default function App () {
   return (
     <NavigationContainer>
-
-      <StatusBar style='auto' />
+      <StatusBar style='inverted' />
       <MainNavigationStack />
     </NavigationContainer>
   )
