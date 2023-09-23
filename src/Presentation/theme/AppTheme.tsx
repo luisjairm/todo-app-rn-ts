@@ -32,5 +32,6 @@ export enum ThemeApp {
    * Magenta
    */
   FUCHSIA = '#EB06FF',
-  WHITE = '#FBFBFB'
+  WHITE = '#FBFBFB',
+  DANGER = '#F75D5B'
 }

@@ -1,9 +1,11 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import LoginScreen from '../screens/auth/login/LoginScreen'
 import { ThemeApp } from '../theme/AppTheme'
+import HomeScreen from '../screens/home/HomeScreen'
 
 export type MainNavigationStackParamList = {
   LoginScreen: undefined
+  HomeScreen: undefined
 }
 
 const Stack = createNativeStackNavigator<MainNavigationStackParamList>()
@@ -27,6 +29,13 @@ const MainNavigationStack = () => {
         component={LoginScreen}
         options={{
           title: 'Nombre'
+        }}
+      />
+      <Stack.Screen
+        name='HomeScreen'
+        component={HomeScreen}
+        options={{
+          title: 'Inicio'
         }}
       />
     </Stack.Navigator>
