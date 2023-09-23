@@ -21,14 +21,15 @@ const MainNavigationStack = () => {
         headerTitleStyle: {
           fontWeight: 'bold'
         },
-        headerShown: false
+        headerShown: true
       }}
     >
       <Stack.Screen
         name='LoginScreen'
         component={LoginScreen}
         options={{
-          title: 'Nombre'
+          title: 'Nombre',
+          headerShown: false
         }}
       />
       <Stack.Screen
