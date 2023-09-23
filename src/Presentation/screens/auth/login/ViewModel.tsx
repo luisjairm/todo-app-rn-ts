@@ -38,6 +38,8 @@ const loginScreenViewModel = ({ navigation }: Props) => {
     if (res === null) return
 
     navigation.navigate('HomeScreen')
+    setToastMSJ(`Bienvenido ${res}`)
+    setToastMSJ('')
   }
 
   return {
