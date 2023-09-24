@@ -29,7 +29,7 @@ const loginScreenViewModel = ({ navigation }: Props) => {
     if (!res) {
       setToastMSJ('Algo salio mal')
     }
-    navigation.navigate('HomeScreen')
+    navigation.navigate('TasksNavigationStack')
     setToastMSJ('Nombre Guardado')
   }
 
@@ -37,7 +37,7 @@ const loginScreenViewModel = ({ navigation }: Props) => {
     const res = await GetUserLocalUseCase()
     if (res === null) return
 
-    navigation.navigate('HomeScreen')
+    navigation.navigate('TasksNavigationStack')
     setToastMSJ(`Bienvenido ${res}`)
     setToastMSJ('')
   }

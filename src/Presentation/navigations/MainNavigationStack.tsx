@@ -1,11 +1,11 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import LoginScreen from '../screens/auth/login/LoginScreen'
 import { ThemeApp } from '../theme/AppTheme'
-import HomeScreen from '../screens/home/HomeScreen'
+import TasksNavigationStack from './TasksNavigationStack'
 
 export type MainNavigationStackParamList = {
   LoginScreen: undefined
-  HomeScreen: undefined
+  TasksNavigationStack: undefined
 }
 
 const Stack = createNativeStackNavigator<MainNavigationStackParamList>()
@@ -33,8 +33,8 @@ const MainNavigationStack = () => {
         }}
       />
       <Stack.Screen
-        name='HomeScreen'
-        component={HomeScreen}
+        name='TasksNavigationStack'
+        component={TasksNavigationStack}
         options={{
           title: 'Inicio'
         }}
