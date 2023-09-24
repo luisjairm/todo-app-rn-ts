@@ -7,12 +7,13 @@ interface Props {
   label: string
   placeHolder: string
   errorText?: string
+  multiline?: boolean
   onchangeText: (value: string) => void
 }
 
-const CustomTextInput = ({ label, placeHolder, errorText, value, onchangeText }: Props) => {
+const CustomTextInput = ({ label, placeHolder, errorText, value, multiline, onchangeText }: Props) => {
   return (
-    <View style={{ width: '80%' }}>
+    <View style={{ width: '80%', marginTop: 20 }}>
       <Text style={{
         color: ThemeApp.WHITE,
         fontWeight: 'bold',
@@ -26,6 +27,8 @@ const CustomTextInput = ({ label, placeHolder, errorText, value, onchangeText }:
         value={value}
         placeholderTextColor={ThemeApp.LIGHT_GRAY}
         onChangeText={onchangeText}
+        multiline={multiline}
+        numberOfLines={multiline === true ? 5 : 1}
         style={{
           borderBottomWidth: 2,
           borderBottomColor: ThemeApp.LIGHT_GRAY,
