@@ -36,7 +36,8 @@ const MainNavigationStack = () => {
         name='TasksNavigationStack'
         component={TasksNavigationStack}
         options={{
-          title: 'Inicio'
+          title: 'Inicio',
+          headerShown: false
         }}
       />
     </Stack.Navigator>
