@@ -1,9 +1,15 @@
-import { View } from 'react-native'
-import React from 'react'
+import { View, Text, Button } from 'react-native'
+import { Picker } from '@react-native-picker/picker'
 import GlobalStyles from '../../theme/GlobalStyles'
 import CustomTextInput from '../../components/CustomTextInput'
+import useViewModel from './ViewModel'
+import { ThemeApp } from '../../theme/AppTheme'
+import { TaskCategories } from '../../../Domain/entities/Task'
+import { CategoryTaksSpanish } from '../../utils/Translations'
 
 const FormTaskScreen = () => {
+  const { formData, errors, updateFormData, handleSubmit } = useViewModel()
+
   return (
     <View style={[
       GlobalStyles.containerScreen,
@@ -15,15 +21,41 @@ const FormTaskScreen = () => {
       <CustomTextInput
         label='Titulo'
         placeHolder='Titulo de la tarea'
-        errorText=''
-        onchangeText={(text) => console.log(text)}
+        errorText={errors.name}
+        value={formData.name}
+        onchangeText={(text) => updateFormData('name', text)}
       />
       <CustomTextInput
         label='Descripción'
         placeHolder='Descripción extra para su tarea'
-        errorText=''
         multiline
-        onchangeText={(text) => console.log(text)}
+        errorText={errors.description}
+        value={formData.description}
+        onchangeText={(text) => updateFormData('description', text)}
+      />
+      <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
+        <Text style={{
+          color: ThemeApp.WHITE,
+          fontWeight: 'bold',
+          fontSize: 15,
+          marginBottom: 5
+        }}
+        >Categoria:
+        </Text>
+        <Picker
+          mode='dropdown'
+          selectedValue={formData.category}
+          onValueChange={(itemValue, itemIndex) => updateFormData('category', itemValue)}
+          style={{ width: '40%', color: ThemeApp.WHITE }}
+        >
+          {Object.values(TaskCategories).map((category) => (
+            <Picker.Item key={category} label={CategoryTaksSpanish[category]} value={category} />
+          ))}
+        </Picker>
+      </View>
+      <Button
+        title='Guardar'
+        onPress={handleSubmit}
       />
     </View>
   )
