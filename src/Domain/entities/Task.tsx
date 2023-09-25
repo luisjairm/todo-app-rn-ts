@@ -4,7 +4,7 @@ export interface Task {
   description: string
   category: TaskCategories
   status: boolean
-  deadline: string
+  // deadline: string
   createdAt: string
   updatedAt: string
 }

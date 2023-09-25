@@ -8,7 +8,12 @@ import { TaskCategories } from '../../../Domain/entities/Task'
 import { CategoryTaksSpanish } from '../../utils/Translations'
 
 const FormTaskScreen = () => {
-  const { formData, errors, updateFormData, handleSubmit } = useViewModel()
+  const {
+    formData,
+    errors,
+    updateFormData,
+    handleSubmit
+  } = useViewModel()
 
   return (
     <View style={[
@@ -34,13 +39,7 @@ const FormTaskScreen = () => {
         onchangeText={(text) => updateFormData('description', text)}
       />
       <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
-        <Text style={{
-          color: ThemeApp.WHITE,
-          fontWeight: 'bold',
-          fontSize: 15,
-          marginBottom: 5
-        }}
-        >Categoria:
+        <Text style={GlobalStyles.label}>Categoria:
         </Text>
         <Picker
           mode='dropdown'
@@ -53,6 +52,11 @@ const FormTaskScreen = () => {
           ))}
         </Picker>
       </View>
+      {/* <InputDateTime
+        label='Fecha limite:'
+        value='10/20/13'
+        showDateTime={() => showDatePicker()}
+      /> */}
       <Button
         title='Guardar'
         onPress={handleSubmit}
