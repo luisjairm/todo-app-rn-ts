@@ -3,7 +3,7 @@ export interface Task {
   name: string
   description: string
   category: TaskCategories
-  status: boolean
+  is_completed: boolean
   // deadline: string
   createdAt: string
   updatedAt: string

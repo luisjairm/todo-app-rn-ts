@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import { Task } from '../../../Domain/entities/Task'
+import { validateFormDataAddTask } from '../../utils/Validations'
+import { AddTaskUseCase } from '../../../Domain/useCases/tasks/AddTask'
+import { GetAllTasksUseCase } from '../../../Domain/useCases/tasks/GetAllTasks'
 
 const FormTaskViewModel = () => {
   const [formData, setFormData] = useState<Partial<Task>>({})
@@ -12,8 +15,19 @@ const FormTaskViewModel = () => {
     }))
   }
 
-  const handleSubmit = () => {
-    console.log('FORMD ATA:: ', JSON.stringify(formData, null, 2))
+  const handleSubmit = async () => {
+    setErrors({})
+    const resValidate = validateFormDataAddTask(formData)
+    if (!resValidate.status && resValidate.errors !== undefined) {
+      setErrors(resValidate.errors as Partial<Task>)
+      return
+    }
+    if (resValidate.data === undefined) return
+    console.log('Agregando')
+    const resADD = AddTaskUseCase(resValidate.data)
+    console.log('REs add::', resADD)
+    const tasks = await GetAllTasksUseCase()
+    console.log('TASKS::: ', tasks)
   }
 
   return {

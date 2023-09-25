@@ -1,4 +1,6 @@
-import { Task } from '../../Domain/entities/Task'
+import uuid from 'react-native-uuid'
+import { Task, TaskCategories } from '../../Domain/entities/Task'
+import { currentDateToSQL } from './Helpers'
 
 interface ErrorsFormDataAddTask {
   name?: string
@@ -28,11 +30,18 @@ export const validateFormDataAddTask = ({ name, category, description, createdAt
 
   if (Object.keys(errors).length > 0) {
     res.errors = errors
-    return
+    return res
   }
 
+  res.status = true
   res.data = {
-    id: '1'
+    id: uuid.v4() as string,
+    name: name as string,
+    description: description as string,
+    category: category as TaskCategories,
+    createdAt: currentDateToSQL(),
+    updatedAt: currentDateToSQL(),
+    is_completed: false
   }
 
   return res

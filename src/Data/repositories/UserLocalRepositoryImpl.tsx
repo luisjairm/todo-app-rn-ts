@@ -1,5 +1,5 @@
 import { UserLocalRepository } from '../../Domain/repositories/UserLocalRepository'
-import { saveItem, KeysLocalStorage, getItem } from '../source/local/LocalStorage'
+import { saveItem, KeysLocalStorage, getItem } from '../source/local/asyncStorage/LocalStorage'
 
 class UserLocalRepositoryImpl implements UserLocalRepository {
   async save (userName: string): Promise<boolean> {
