@@ -1,5 +1,5 @@
 import * as sqlite from 'expo-sqlite'
-import { SQLiteInterface } from '../../../../Domain/entities/SQLite'
+import { SQLiteInterface } from '../../../../Domain/repositories/SQLiteRepository'
 import { Task } from '../../../../Domain/entities/Task'
 
 class SQLiteImpl implements SQLiteInterface {
@@ -10,44 +10,57 @@ class SQLiteImpl implements SQLiteInterface {
     this.initDatabase()
   }
 
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   addTask ({ id, name, description, category, is_completed, createdAt, updatedAt }: Task) {
-    const db = sqlite.openDatabase(this.db_name)
-    const complete = is_completed ? 1 : 0 // Convierte el valor booleano a 1 o 0
-    db.transaction(tx => {
-      tx.executeSql(
-        'INSERT INTO tasks (id, name, description, category, is_completed, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [id, name, description, category, complete, createdAt, updatedAt],
-        (_, result) => {
-          console.log('Fila agregada')
-        },
-        (_, error) => {
-          console.log('Error al agregar fila', error)
-          return false
-        }
-      )
-    })
-  }
-
-  async getAllTasks () {
-    const db = sqlite.openDatabase(this.db_name)
-    return await new Promise((resolve, reject) => {
+    try {
+      const db = sqlite.openDatabase(this.db_name)
+      const complete = is_completed ? 1 : 0 // Convierte el valor booleano a 1 o 0
       db.transaction(tx => {
         tx.executeSql(
-          'SELECT * FROM tasks',
-          [],
+          'INSERT INTO tasks (id, name, description, category, is_completed, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)',
+          [id, name, description, category, complete, createdAt, updatedAt],
           (_, result) => {
-            const tasks = result.rows._array
-            resolve(tasks)
-            console.log(tasks)
+            console.log('Fila agregada')
           },
           (_, error) => {
-            console.log('Error al obtener las tareas', error)
-            reject(error)
+            console.log('Error al agregar fila', error)
             return false
           }
         )
       })
-    })
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
+  async getAllTasks () {
+    try {
+      let tasks: Task[] = []
+      const db = sqlite.openDatabase(this.db_name)
+      await new Promise((resolve, reject) => {
+        db.transaction(tx => {
+          tx.executeSql(
+            'SELECT * FROM tasks',
+            [],
+            (_, result) => {
+              tasks = result.rows._array
+              resolve(tasks)
+              // console.log(tasks)
+            },
+            (_, error) => {
+              console.log('Error al obtener las tareas', error)
+              reject(error)
+              return false
+            }
+          )
+        })
+      })
+
+      return this.cleanDataTasks(tasks)
+    } catch (error) {
+      return null
+    }
   }
 
   private initDatabase () {
@@ -70,6 +83,24 @@ class SQLiteImpl implements SQLiteInterface {
         console.log('Error en la transacción', error)
       }
     )
+  }
+
+  private cleanDataTasks (data: any) {
+    const newData = data.map((task: any) => {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      const { id, name, description, category, is_completed, createdAt, updatedAt } = task
+      const completed = is_completed === 1
+      return {
+        id,
+        name,
+        description,
+        category,
+        is_completed: completed,
+        createdAt,
+        updatedAt
+      }
+    })
+    return newData as Task[]
   }
 }
 
