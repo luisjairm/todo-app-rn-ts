@@ -6,14 +6,18 @@ import useViewModel from './ViewModel'
 import { ThemeApp } from '../../theme/AppTheme'
 import { TaskCategories } from '../../../Domain/entities/Task'
 import { CategoryTaksSpanish } from '../../utils/Translations'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { TasksNavigationStackParamList } from '../../navigations/TasksNavigationStack'
 
-const FormTaskScreen = () => {
+interface Props extends NativeStackScreenProps<TasksNavigationStackParamList> {}
+
+const FormTaskScreen = ({ navigation, route }: Props) => {
   const {
     formData,
     errors,
     updateFormData,
     handleSubmit
-  } = useViewModel()
+  } = useViewModel({ navigation, route })
 
   return (
     <View style={[
