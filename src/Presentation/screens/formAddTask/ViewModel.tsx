@@ -2,9 +2,12 @@ import { useState } from 'react'
 import { Task } from '../../../Domain/entities/Task'
 import { validateFormDataAddTask } from '../../utils/Validations'
 import { AddTaskUseCase } from '../../../Domain/useCases/tasks/AddTask'
-import { GetAllTasksUseCase } from '../../../Domain/useCases/tasks/GetAllTasks'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { TasksNavigationStackParamList } from '../../navigations/TasksNavigationStack'
 
-const FormTaskViewModel = () => {
+interface Props extends NativeStackScreenProps<TasksNavigationStackParamList> {}
+
+const FormTaskViewModel = ({ navigation, route }: Props) => {
   const [formData, setFormData] = useState<Partial<Task>>({})
   const [errors, setErrors] = useState<Partial<Task>>({})
 
@@ -26,8 +29,10 @@ const FormTaskViewModel = () => {
     console.log('Agregando')
     const resADD = AddTaskUseCase(resValidate.data)
     console.log('REs add::', resADD)
-    const tasks = await GetAllTasksUseCase()
-    console.log('TASKS::: ', tasks)
+    if (!resADD) {
+      return
+    }
+    navigation.navigate('HomeScreen')
   }
 
   return {
