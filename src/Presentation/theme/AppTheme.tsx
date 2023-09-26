@@ -33,5 +33,7 @@ export enum ThemeApp {
    */
   FUCHSIA = '#EB06FF',
   WHITE = '#FBFBFB',
-  DANGER = '#F75D5B'
+  DANGER = '#F75D5B',
+  SCHOOL = '#ADD8E6',
+  WORK = '#808080'
 }
