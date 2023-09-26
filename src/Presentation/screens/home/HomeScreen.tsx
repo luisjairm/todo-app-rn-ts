@@ -4,15 +4,46 @@ import GlobalStyles from '../../theme/GlobalStyles'
 import { ThemeApp } from '../../theme/AppTheme'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { TasksNavigationStackParamList } from '../../navigations/TasksNavigationStack'
+import useViewModel from './ViewModel'
+import { useFocusEffect } from '@react-navigation/native'
+import { useCallback } from 'react'
+import TaskCard from '../../components/TaskCard'
 
 interface Props extends NativeStackScreenProps<TasksNavigationStackParamList> {}
 
 const HomeScreen = ({ navigation, route }: Props) => {
+  const { tasks, loadData } = useViewModel()
+
+  useFocusEffect(
+    useCallback(
+      () => {
+        void loadData()
+      }
+      , [])
+  )
+
   return (
-    <View style={GlobalStyles.containerScreen}>
+    <View style={[
+      GlobalStyles.containerScreen,
+      {
+        paddingTop: 50,
+        alignItems: 'center'
+      }
+    ]}
+    >
       <ScrollView style={{ width: '100%' }}>
         <Text style={{ fontSize: 18, color: ThemeApp.WHITE, fontWeight: 'bold' }}>Bienvenido Luis</Text>
 
+        <View style={{ width: '100%', alignItems: 'center' }}>
+          {
+            tasks.map(task => (
+              <TaskCard
+                key={task.id}
+                task={task}
+              />
+            ))
+          }
+        </View>
       </ScrollView>
       <TouchableOpacity
         onPress={() => navigation.navigate('FormTaskScreen')}
