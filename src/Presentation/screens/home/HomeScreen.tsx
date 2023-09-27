@@ -5,12 +5,12 @@ import GlobalStyles from '../../theme/GlobalStyles'
 import { ThemeApp } from '../../theme/AppTheme'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { TasksNavigationStackParamList } from '../../navigations/TasksNavigationStack'
-import useViewModel from './ViewModel'
 import { Picker } from '@react-native-picker/picker'
 import TaskCard from '../../components/TaskCard'
 import { AppContext } from '../../context/AppContext'
 import { TaskCategories } from '../../../Domain/entities/Task'
 import { CategoryTaksSpanish } from '../../utils/Translations'
+import useViewModel from './ViewModel'
 
 interface Props extends NativeStackScreenProps<TasksNavigationStackParamList> {}
 
@@ -58,13 +58,15 @@ const HomeScreen = ({ navigation, route }: Props) => {
               <TaskCard
                 key={task.id}
                 task={task}
+                navigation={navigation}
+                route={route}
               />
             ))
           }
         </View>
       </ScrollView>
       <TouchableOpacity
-        onPress={() => navigation.navigate('FormTaskScreen')}
+        onPress={() => navigation.navigate('FormTaskScreen', {})}
         style={
         [
           GlobalStyles.shadow,

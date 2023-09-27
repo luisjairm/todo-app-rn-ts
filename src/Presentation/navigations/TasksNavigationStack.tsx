@@ -2,10 +2,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { ThemeApp } from '../theme/AppTheme'
 import HomeScreen from '../screens/home/HomeScreen'
 import FormTaskScreen from '../screens/formAddTask/FormTaskScreen'
+import { Task } from '../../Domain/entities/Task'
 
 export type TasksNavigationStackParamList = {
   HomeScreen: undefined
-  FormTaskScreen: undefined
+  FormTaskScreen: {
+    task?: Task
+  }
 }
 
 const Stack = createNativeStackNavigator<TasksNavigationStackParamList>()

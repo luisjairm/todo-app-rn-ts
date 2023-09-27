@@ -9,14 +9,15 @@ import { CategoryTaksSpanish } from '../../utils/Translations'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { TasksNavigationStackParamList } from '../../navigations/TasksNavigationStack'
 
-interface Props extends NativeStackScreenProps<TasksNavigationStackParamList> {}
+interface Props extends NativeStackScreenProps<TasksNavigationStackParamList, 'FormTaskScreen'> {}
 
 const FormTaskScreen = ({ navigation, route }: Props) => {
   const {
     formData,
     errors,
     updateFormData,
-    handleSubmit
+    handleSubmit,
+    handleSubmitUpdate
   } = useViewModel({ navigation, route })
 
   return (
@@ -48,7 +49,10 @@ const FormTaskScreen = ({ navigation, route }: Props) => {
         <Picker
           mode='dropdown'
           selectedValue={formData.category}
-          onValueChange={(itemValue, itemIndex) => updateFormData('category', itemValue)}
+          onValueChange={(itemValue, itemIndex) => {
+            console.log(1)
+            updateFormData('category', itemValue)
+          }}
           style={{ width: '40%', color: ThemeApp.WHITE }}
         >
           {Object.values(TaskCategories).map((category) => (
@@ -61,10 +65,22 @@ const FormTaskScreen = ({ navigation, route }: Props) => {
         value='10/20/13'
         showDateTime={() => showDatePicker()}
       /> */}
-      <Button
-        title='Guardar'
-        onPress={handleSubmit}
-      />
+      {
+        route.params.task === undefined
+          ? (
+            <Button
+              title='Guardar'
+              onPress={handleSubmit}
+            />
+            )
+          : (
+            <Button
+              title='Guardar'
+              onPress={handleSubmitUpdate}
+            />
+
+            )
+      }
     </View>
   )
 }

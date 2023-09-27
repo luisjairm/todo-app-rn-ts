@@ -8,11 +8,13 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { ToggleTaskCompletionByIdUseCase } from '../../Domain/useCases/tasks/ToggleTaskCompletionById'
 import { AppContext } from '../context/AppContext'
 import { useContext } from 'react'
-interface Props {
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { TasksNavigationStackParamList } from '../navigations/TasksNavigationStack'
+interface Props extends NativeStackScreenProps<TasksNavigationStackParamList> {
   task: Task
 }
 
-const TaskCard = ({ task }: Props) => {
+const TaskCard = ({ task, navigation }: Props) => {
   const { loadUpTasks } = useContext(AppContext)
   const { name, description, createdAt, category, is_completed, id, updatedAt } = task
 
@@ -68,7 +70,7 @@ const TaskCard = ({ task }: Props) => {
       </View>
 
       <TouchableOpacity
-        onPress={() => console.log(is_completed)}
+        onPress={() => navigation.navigate('FormTaskScreen', { task })}
         style={
         [
           { width: '10%' }

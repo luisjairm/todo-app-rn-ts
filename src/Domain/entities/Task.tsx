@@ -4,13 +4,23 @@ export interface Task {
   description: string
   category: TaskCategories
   is_completed: boolean
-  // deadline: string
   createdAt: string
   updatedAt: string
+  // deadline: string
 }
 
 export enum TaskCategories {
   SCHOOL = 'school',
   PERSONAL = 'staff',
   WORK = 'work'
+}
+
+export const initValuesTask: Task = {
+  id: '',
+  name: '',
+  description: '',
+  category: TaskCategories.PERSONAL,
+  is_completed: false,
+  createdAt: '',
+  updatedAt: ''
 }

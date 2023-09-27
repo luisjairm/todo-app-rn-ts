@@ -12,6 +12,35 @@ class SQLiteImpl implements SQLiteInterface {
     this.initDatabase()
   }
 
+  async getTaskById (id: string): Promise<Task | null> {
+    try {
+      let tasks: Task[] = []
+      const db = sqlite.openDatabase(this.db_name)
+      await new Promise((resolve, reject) => {
+        db.transaction(tx => {
+          tx.executeSql(
+            'SELECT * FROM tasks WHERE id=?',
+            [id],
+            (_, result) => {
+              tasks = result.rows._array
+              resolve(tasks)
+              // console.log(tasks)
+            },
+            (_, error) => {
+              console.log('Error al obtener las tareas', error)
+              reject(error)
+              return false
+            }
+          )
+        })
+      })
+      const task: Task = tasks[0]
+      return this.cleanDataTask(task)
+    } catch (error) {
+      return null
+    }
+  }
+
   // eslint-disable-next-line @typescript-eslint/naming-convention
   addTask ({ id, name, description, category, is_completed, createdAt, updatedAt }: Task) {
     try {
@@ -163,6 +192,20 @@ class SQLiteImpl implements SQLiteInterface {
       }
     })
     return newData as Task[]
+  }
+
+  private cleanDataTask (data: any): Task {
+    const { id, name, description, category, is_completed, createdAt, updatedAt } = data
+    const completed = is_completed === 1
+    return {
+      id,
+      name,
+      description,
+      category,
+      is_completed: completed,
+      createdAt,
+      updatedAt
+    }
   }
 }
 
