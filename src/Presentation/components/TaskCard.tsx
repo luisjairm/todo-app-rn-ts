@@ -59,8 +59,8 @@ const TaskCard = ({ task }: Props) => {
         <Text style={{ color: ThemeApp.LIGHT_GRAY, fontSize: 13 }}>{description}</Text>
         <Text style={{ color: ThemeApp.LIGHT_GRAY, fontSize: 11 }}>{
           is_completed
-            ? `Completada: ${dateFormat(updatedAt)}`
-            : `Creada: ${dateFormat(createdAt)}`
+            ? `Creada: ${dateFormat(createdAt)} \nCompletada: ${dateFormat(updatedAt)}`
+            : `${dateFormat(createdAt)}`
 
         }
         </Text>

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as sqlite from 'expo-sqlite'
 import { SQLiteInterface } from '../../../../Domain/repositories/SQLiteRepository'
-import { Task } from '../../../../Domain/entities/Task'
+import { Task, TaskCategories } from '../../../../Domain/entities/Task'
 import { currentDateToSQL } from '../../../../Presentation/utils/Helpers'
 
 class SQLiteImpl implements SQLiteInterface {
@@ -45,6 +45,35 @@ class SQLiteImpl implements SQLiteInterface {
           tx.executeSql(
             'SELECT * FROM tasks ORDER BY is_completed ASC, updatedAt DESC',
             [],
+            (_, result) => {
+              tasks = result.rows._array
+              resolve(tasks)
+              // console.log(tasks)
+            },
+            (_, error) => {
+              console.log('Error al obtener las tareas', error)
+              reject(error)
+              return false
+            }
+          )
+        })
+      })
+
+      return this.cleanDataTasks(tasks)
+    } catch (error) {
+      return null
+    }
+  }
+
+  async getTasksByCategory (category: TaskCategories): Promise<Task[] | null> {
+    try {
+      let tasks: Task[] = []
+      const db = sqlite.openDatabase(this.db_name)
+      await new Promise((resolve, reject) => {
+        db.transaction(tx => {
+          tx.executeSql(
+            'SELECT * FROM tasks WHERE category=? AND is_completed=0 ORDER BY updatedAt DESC',
+            [category],
             (_, result) => {
               tasks = result.rows._array
               resolve(tasks)

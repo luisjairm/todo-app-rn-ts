@@ -1,30 +1,32 @@
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
-import { useContext, useCallback } from 'react'
+import { useContext, useEffect } from 'react'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import GlobalStyles from '../../theme/GlobalStyles'
 import { ThemeApp } from '../../theme/AppTheme'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { TasksNavigationStackParamList } from '../../navigations/TasksNavigationStack'
 import useViewModel from './ViewModel'
-import { useFocusEffect } from '@react-navigation/native'
-
+import { Picker } from '@react-native-picker/picker'
 import TaskCard from '../../components/TaskCard'
 import { AppContext } from '../../context/AppContext'
+import { TaskCategories } from '../../../Domain/entities/Task'
+import { CategoryTaksSpanish } from '../../utils/Translations'
 
 interface Props extends NativeStackScreenProps<TasksNavigationStackParamList> {}
 
 const HomeScreen = ({ navigation, route }: Props) => {
   const { loadTasks } = useContext(AppContext)
-  const { tasks, loadData } = useViewModel()
+  const { tasks, loadData, updateSearch, searchCatergory, loadAllTasks } = useViewModel()
 
-  useFocusEffect(
-    useCallback(
-      () => {
-        void loadData()
-        console.log('1')
-      }
-      , [loadTasks])
-  )
+  useEffect(() => {
+    if (searchCatergory === 'all') {
+      void loadAllTasks()
+      return
+    }
+    void loadData()
+    console.log('1')
+  }
+  , [loadTasks, searchCatergory])
 
   return (
     <View style={[
@@ -36,8 +38,20 @@ const HomeScreen = ({ navigation, route }: Props) => {
     ]}
     >
       <ScrollView style={{ width: '100%' }}>
-        <Text style={{ fontSize: 18, color: ThemeApp.WHITE, fontWeight: 'bold' }}>Bienvenido Luis</Text>
-
+        <Text style={{ fontSize: 18, color: ThemeApp.WHITE, fontWeight: 'bold', textAlign: 'center', marginBottom: 10 }}>TODAS LAS TAREAS</Text>
+        <View style={{ width: '100%', alignItems: 'center' }}>
+          <Picker
+            mode='dropdown'
+            selectedValue={searchCatergory}
+            onValueChange={(itemValue, itemIndex) => updateSearch(itemValue)}
+            style={{ width: '80%', color: ThemeApp.WHITE }}
+          >
+            <Picker.Item label='Todas' value='all' />
+            {Object.values(TaskCategories).map((category) => (
+              <Picker.Item key={category} label={CategoryTaksSpanish[category]} value={category} />
+            ))}
+          </Picker>
+        </View>
         <View style={{ width: '100%', alignItems: 'center' }}>
           {
             tasks.map(task => (
