@@ -1,4 +1,5 @@
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
+import { useContext, useCallback } from 'react'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import GlobalStyles from '../../theme/GlobalStyles'
 import { ThemeApp } from '../../theme/AppTheme'
@@ -6,20 +7,23 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { TasksNavigationStackParamList } from '../../navigations/TasksNavigationStack'
 import useViewModel from './ViewModel'
 import { useFocusEffect } from '@react-navigation/native'
-import { useCallback } from 'react'
+
 import TaskCard from '../../components/TaskCard'
+import { AppContext } from '../../context/AppContext'
 
 interface Props extends NativeStackScreenProps<TasksNavigationStackParamList> {}
 
 const HomeScreen = ({ navigation, route }: Props) => {
+  const { loadTasks } = useContext(AppContext)
   const { tasks, loadData } = useViewModel()
 
   useFocusEffect(
     useCallback(
       () => {
         void loadData()
+        console.log('1')
       }
-      , [])
+      , [loadTasks])
   )
 
   return (
