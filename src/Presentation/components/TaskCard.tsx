@@ -5,6 +5,7 @@ import { ThemeApp } from '../theme/AppTheme'
 import { dateFormat } from '../utils/Helpers'
 import { CategoryTaksSpanish } from '../utils/Translations'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { ToggleTaskCompletionByIdUseCase } from '../../Domain/useCases/tasks/ToggleTaskCompletionById'
 interface Props {
   task: Task
 }
@@ -31,7 +32,7 @@ const TaskCard = ({ task }: Props) => {
         padding: 15,
         borderRadius: 10,
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         alignItems: 'center'
       }}
     >
@@ -45,7 +46,7 @@ const TaskCard = ({ task }: Props) => {
         // text='Custom Checkbox'
           iconStyle={{ borderColor: ThemeApp.DEEP_NAVY }}
           innerIconStyle={{ borderWidth: 2 }}
-          onPress={(isChecked: boolean) => console.log(isChecked)}
+          onPress={(isChecked: boolean) => ToggleTaskCompletionByIdUseCase(isChecked, id)}
         />
       </View>
       <View style={{ width: '60%' }}>

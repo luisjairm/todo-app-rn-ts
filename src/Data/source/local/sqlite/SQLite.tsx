@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import * as sqlite from 'expo-sqlite'
 import { SQLiteInterface } from '../../../../Domain/repositories/SQLiteRepository'
 import { Task } from '../../../../Domain/entities/Task'
@@ -75,6 +76,7 @@ class SQLiteImpl implements SQLiteInterface {
           },
           (_, error) => {
             console.log('Error al crear la tabla', error)
+
             return false
           }
         )
@@ -83,6 +85,34 @@ class SQLiteImpl implements SQLiteInterface {
         console.log('Error en la transacción', error)
       }
     )
+  }
+
+  toggleTaskCompletionById (is_completed: boolean, id: string) {
+    try {
+      const complete = is_completed ? 1 : 0
+      const db = sqlite.openDatabase(this.db_name)
+      db.transaction(
+        (tx) => {
+          tx.executeSql(
+            'UPDATE tasks SET is_completed = ? WHERE id=?',
+            [complete, id],
+            () => {
+              console.log('Tarea Actualizada')
+            },
+            (_, error) => {
+              console.log('Error al actualizar la tarea', error)
+              return false
+            }
+          )
+        },
+        error => {
+          console.log('Error en la transacción', error)
+        }
+      )
+      return true
+    } catch (error) {
+      return false
+    }
   }
 
   private cleanDataTasks (data: any) {
