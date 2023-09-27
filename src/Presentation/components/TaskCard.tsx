@@ -50,7 +50,7 @@ const TaskCard = ({ task }: Props) => {
         />
       </View>
       <View style={{ width: '60%' }}>
-        <Text style={{ color: ThemeApp.WHITE, fontSize: 15, fontWeight: 'bold' }}>{name}</Text>
+        <Text style={{ color: ThemeApp.WHITE, fontSize: 15, fontWeight: 'bold', textDecorationLine: is_completed ? 'line-through' : 'none' }}>{name}</Text>
         <Text style={{ color: ThemeApp.LIGHT_GRAY, fontSize: 13 }}>{description}</Text>
         <Text style={{ color: ThemeApp.LIGHT_GRAY, fontSize: 11 }}>{dateFormat(createdAt)}</Text>
         <Text style={{ color: ThemeApp.LIGHT_GRAY, fontSize: 11 }}>{CategoryTaksSpanish[category]}</Text>
