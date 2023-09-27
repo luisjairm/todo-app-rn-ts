@@ -2,6 +2,7 @@
 import * as sqlite from 'expo-sqlite'
 import { SQLiteInterface } from '../../../../Domain/repositories/SQLiteRepository'
 import { Task } from '../../../../Domain/entities/Task'
+import { currentDateToSQL } from '../../../../Presentation/utils/Helpers'
 
 class SQLiteImpl implements SQLiteInterface {
   db_name: string
@@ -42,7 +43,7 @@ class SQLiteImpl implements SQLiteInterface {
       await new Promise((resolve, reject) => {
         db.transaction(tx => {
           tx.executeSql(
-            'SELECT * FROM tasks ORDER BY is_completed ASC, createdAt ASC',
+            'SELECT * FROM tasks ORDER BY is_completed ASC, updatedAt DESC',
             [],
             (_, result) => {
               tasks = result.rows._array
@@ -91,12 +92,13 @@ class SQLiteImpl implements SQLiteInterface {
   toggleTaskCompletionById (is_completed: boolean, id: string) {
     try {
       const complete = is_completed ? 1 : 0
+      const updatedAt = currentDateToSQL()
       const db = sqlite.openDatabase(this.db_name)
       db.transaction(
         (tx) => {
           tx.executeSql(
-            'UPDATE tasks SET is_completed = ? WHERE id=?',
-            [complete, id],
+            'UPDATE tasks SET is_completed = ?, updatedAt = ? WHERE id=?',
+            [complete, updatedAt, id],
             () => {
               console.log('Tarea Actualizada')
             },
