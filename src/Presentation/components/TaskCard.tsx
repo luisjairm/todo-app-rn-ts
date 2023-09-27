@@ -6,22 +6,24 @@ import { dateFormat } from '../utils/Helpers'
 import { CategoryTaksSpanish } from '../utils/Translations'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { ToggleTaskCompletionByIdUseCase } from '../../Domain/useCases/tasks/ToggleTaskCompletionById'
+import { AppContext } from '../context/AppContext'
+import { useContext } from 'react'
 interface Props {
   task: Task
 }
 
-const selectCheckColor = (category: TaskCategories) => {
-  const colors: Record<TaskCategories, string> = {
-    [TaskCategories.PERSONAL]: ThemeApp.SKY_BLUE,
-    [TaskCategories.WORK]: ThemeApp.WORK,
-    [TaskCategories.SCHOOL]: ThemeApp.SCHOOL
-  }
-  return colors[category]
-}
-
 const TaskCard = ({ task }: Props) => {
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const { name, description, createdAt, category, is_completed, id } = task
+  const { loadUpTasks } = useContext(AppContext)
+  const { name, description, createdAt, category, is_completed, id, updatedAt } = task
+
+  const selectCheckColor = (category: TaskCategories) => {
+    const colors: Record<TaskCategories, string> = {
+      [TaskCategories.PERSONAL]: ThemeApp.SKY_BLUE,
+      [TaskCategories.WORK]: ThemeApp.WORK,
+      [TaskCategories.SCHOOL]: ThemeApp.SCHOOL
+    }
+    return colors[category]
+  }
 
   return (
     <View
@@ -46,13 +48,22 @@ const TaskCard = ({ task }: Props) => {
         // text='Custom Checkbox'
           iconStyle={{ borderColor: ThemeApp.DEEP_NAVY }}
           innerIconStyle={{ borderWidth: 2 }}
-          onPress={(isChecked: boolean) => ToggleTaskCompletionByIdUseCase(isChecked, id)}
+          onPress={(isChecked: boolean) => {
+            ToggleTaskCompletionByIdUseCase(isChecked, id)
+            loadUpTasks()
+          }}
         />
       </View>
       <View style={{ width: '60%' }}>
         <Text style={{ color: ThemeApp.WHITE, fontSize: 15, fontWeight: 'bold', textDecorationLine: is_completed ? 'line-through' : 'none' }}>{name}</Text>
         <Text style={{ color: ThemeApp.LIGHT_GRAY, fontSize: 13 }}>{description}</Text>
-        <Text style={{ color: ThemeApp.LIGHT_GRAY, fontSize: 11 }}>{dateFormat(createdAt)}</Text>
+        <Text style={{ color: ThemeApp.LIGHT_GRAY, fontSize: 11 }}>{
+          is_completed
+            ? `Completada: ${dateFormat(updatedAt)}`
+            : `Creada: ${dateFormat(createdAt)}`
+
+        }
+        </Text>
         <Text style={{ color: ThemeApp.LIGHT_GRAY, fontSize: 11 }}>{CategoryTaksSpanish[category]}</Text>
       </View>
 
