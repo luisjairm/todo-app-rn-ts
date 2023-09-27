@@ -42,7 +42,7 @@ class SQLiteImpl implements SQLiteInterface {
       await new Promise((resolve, reject) => {
         db.transaction(tx => {
           tx.executeSql(
-            'SELECT * FROM tasks',
+            'SELECT * FROM tasks ORDER BY is_completed ASC, createdAt ASC',
             [],
             (_, result) => {
               tasks = result.rows._array
@@ -72,7 +72,8 @@ class SQLiteImpl implements SQLiteInterface {
           'CREATE TABLE IF NOT EXISTS tasks (id TEXT PRIMARY KEY, name TEXT NOT NULL, description TEXT NOT NULL, category TEXT NOT NULL, is_completed BOOLEAN NOT NULL, createdAt DATETIME NOT NULL, updatedAt DATETIME NOT NULL);',
           [],
           () => {
-            console.log('Tabla creada')
+            // console.log('Tabla creada')
+            return true
           },
           (_, error) => {
             console.log('Error al crear la tabla', error)
