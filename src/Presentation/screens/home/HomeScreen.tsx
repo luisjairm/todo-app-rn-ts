@@ -16,7 +16,7 @@ interface Props extends NativeStackScreenProps<TasksNavigationStackParamList> {}
 
 const HomeScreen = ({ navigation, route }: Props) => {
   const { loadTasks } = useContext(AppContext)
-  const { tasks, loadData, updateSearch, searchCatergory, loadAllTasks } = useViewModel()
+  const { tasks, loadData, updateSearch, searchCatergory, loadAllTasks, userName } = useViewModel()
 
   useEffect(() => {
     if (searchCatergory === 'all') {
@@ -38,7 +38,7 @@ const HomeScreen = ({ navigation, route }: Props) => {
     ]}
     >
       <ScrollView style={{ width: '100%' }}>
-        <Text style={{ fontSize: 18, color: ThemeApp.WHITE, fontWeight: 'bold', textAlign: 'center', marginBottom: 10 }}>TAREAS</Text>
+        <Text style={{ fontSize: 18, color: ThemeApp.WHITE, fontWeight: 'bold', textAlign: 'center', marginBottom: 10 }}>TAREAS DE {userName}</Text>
         <View style={{ width: '100%', alignItems: 'center' }}>
           <Picker
             mode='dropdown'

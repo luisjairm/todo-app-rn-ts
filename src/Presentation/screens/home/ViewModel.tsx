@@ -1,10 +1,26 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Task, TaskCategories } from '../../../Domain/entities/Task'
 import { GetTasksByCategory } from '../../../Domain/useCases/tasks/GetTasksByCategory'
 import { GetAllTasksUseCase } from '../../../Domain/useCases/tasks/GetAllTasks'
+import { GetUserLocalUseCase } from '../../../Domain/useCases/userLocal/GetUserLocal'
 const HomeScreenViewModel = () => {
   const [tasks, setTasks] = useState<Task[]>([])
   const [searchCatergory, setSearchCategory] = useState<TaskCategories | 'all'>('all')
+  const [userName, setUserName] = useState<string>('')
+
+  useEffect(() => {
+    void getUserName()
+  }, [])
+
+  const getUserName = async () => {
+    const res = await GetUserLocalUseCase()
+    console.log(res)
+    if (res !== null) {
+      setUserName(res)
+      return
+    }
+    setUserName('')
+  }
 
   const updateSearch = (catego: TaskCategories | 'all') => {
     setSearchCategory(catego)
@@ -31,7 +47,8 @@ const HomeScreenViewModel = () => {
     loadData,
     updateSearch,
     searchCatergory,
-    loadAllTasks
+    loadAllTasks,
+    userName
   }
 }
 
