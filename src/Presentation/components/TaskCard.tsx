@@ -10,6 +10,7 @@ import { AppContext } from '../context/AppContext'
 import { useContext } from 'react'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { TasksNavigationStackParamList } from '../navigations/TasksNavigationStack'
+import { DeleteTaskByIdUseCase } from '../../Domain/useCases/tasks/DeleteTaskById'
 interface Props extends NativeStackScreenProps<TasksNavigationStackParamList> {
   task: Task
 }
@@ -70,7 +71,11 @@ const TaskCard = ({ task, navigation }: Props) => {
       </View>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('FormTaskScreen', { task })}
+        onPress={() => {
+          const res = DeleteTaskByIdUseCase(id)
+          if (!res) return
+          loadUpTasks()
+        }}
         style={
         [
           { width: '10%' }
@@ -78,9 +83,9 @@ const TaskCard = ({ task, navigation }: Props) => {
 }
       >
         <Icon
-          name='pencil'
+          name='delete'
           size={25}
-          color={selectCheckColor(category)}
+          color={ThemeApp.DANGER}
         />
       </TouchableOpacity>
     </View>

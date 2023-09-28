@@ -6,4 +6,5 @@ export interface SQLiteInterface {
   getTasksByCategory: (category: TaskCategories) => Promise<Task[] | null>
   toggleTaskCompletionById: (is_completed: boolean, id: string) => boolean
   getTaskById: (id: string) => Promise<Task | null>
+  deleteTaskById: (id: string) => boolean
 }

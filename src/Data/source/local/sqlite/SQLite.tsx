@@ -12,6 +12,29 @@ class SQLiteImpl implements SQLiteInterface {
     this.initDatabase()
   }
 
+  deleteTaskById (id: string): boolean {
+    try {
+      const db = sqlite.openDatabase(this.db_name)
+      db.transaction(tx => {
+        tx.executeSql(
+          'DELETE FROM tasks WHERE id = ?',
+          [id],
+          (_, result) => {
+            console.log('Tarea eliminada')
+            return true
+          },
+          (_, error) => {
+            console.log('Error al eliminar la tarea', error)
+            return false
+          }
+        )
+      })
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
   async getTaskById (id: string): Promise<Task | null> {
     try {
       let tasks: Task[] = []
