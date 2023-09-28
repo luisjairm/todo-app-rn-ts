@@ -1,16 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { Task, initValuesTask } from '../../../Domain/entities/Task'
 import { validateFormDataAddTask } from '../../utils/Validations'
 import { AddTaskUseCase } from '../../../Domain/useCases/tasks/AddTask'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { TasksNavigationStackParamList } from '../../navigations/TasksNavigationStack'
 import { GetTaskByIdUseCase } from '../../../Domain/useCases/tasks/GetTaskById'
+import { AppContext } from '../../context/AppContext'
 
 interface Props extends NativeStackScreenProps<TasksNavigationStackParamList, 'FormTaskScreen'> {}
 
 const FormTaskViewModel = ({ navigation, route }: Props) => {
   const [formData, setFormData] = useState<Task>(initValuesTask)
   const [errors, setErrors] = useState<Partial<Task>>({})
+
+  const { loadUpTasks } = useContext(AppContext)
 
   useEffect(() => {
     if (route.params.task !== undefined) {
@@ -41,6 +44,7 @@ const FormTaskViewModel = ({ navigation, route }: Props) => {
       return
     }
     navigation.navigate('HomeScreen')
+    loadUpTasks()
   }
 
   const loadDataTask = async (id: string) => {
