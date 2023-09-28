@@ -38,7 +38,7 @@ const HomeScreen = ({ navigation, route }: Props) => {
     ]}
     >
       <ScrollView style={{ width: '100%' }}>
-        <Text style={{ fontSize: 18, color: ThemeApp.WHITE, fontWeight: 'bold', textAlign: 'center', marginBottom: 10 }}>TODAS LAS TAREAS</Text>
+        <Text style={{ fontSize: 18, color: ThemeApp.WHITE, fontWeight: 'bold', textAlign: 'center', marginBottom: 10 }}>TAREAS</Text>
         <View style={{ width: '100%', alignItems: 'center' }}>
           <Picker
             mode='dropdown'
